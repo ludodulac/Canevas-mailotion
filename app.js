@@ -3,11 +3,11 @@
 const REPO='ludodulac/Canevas-mailotion';
 const STORE='mailotion-studio-v1';
 const CATALOG_CACHE='mailotion-studio-catalog-v1';
-const FIELD_NAMES=['name','brand','logoText','subject','preheader','kicker','heading','intro','body','heroImage','productImage','productTitle','productDescription','productPrice','showProduct','showPromo','promoText','promoCode','buttonText','buttonUrl','reassurance','footerText','footerEmail','background','paper','accent','dark','muted','font'];
-const BOOL=new Set(['showProduct','showPromo']);
+const FIELD_NAMES=['name','brand','logoText','subject','preheader','kicker','heading','intro','body','heroImage','productImage','productTitle','productDescription','productPrice','showProduct','showPromo','promoText','promoCode','buttonText','buttonUrl','reassurance','footerText','footerEmail','background','paper','accent','dark','muted','font','showHero','layout'];
+const BOOL=new Set(['showProduct','showPromo','showHero']);
 const COLORS=new Set(['background','paper','accent','dark','muted']);
 const LIMIT={name:110,brand:85,logoText:110,subject:180,preheader:180,kicker:130,heading:220,intro:500,body:1600,heroImage:500,productImage:500,productTitle:110,productDescription:180,productPrice:35,promoText:120,promoCode:55,buttonText:100,buttonUrl:600,reassurance:360,footerText:400,footerEmail:160};
-const FALLBACK={name:'Mon canevas',brand:'MA BOUTIQUE',logoText:'MA BOUTIQUE',subject:'Un mot de notre boutique',preheader:'',kicker:'BONJOUR',heading:'Bienvenue chez nous.',intro:'Un petit mot rien que pour vous.',body:'Merci de faire partie de notre univers.',heroImage:'',productImage:'',productTitle:'',productDescription:'',productPrice:'',showProduct:false,showPromo:false,promoText:'',promoCode:'',buttonText:'DÉCOUVRIR',buttonUrl:'',reassurance:'',footerText:'Merci pour votre confiance.',footerEmail:'',background:'#f6f1f5',paper:'#ffffff',accent:'#8256a8',dark:'#342340',muted:'#887c8a',font:'Georgia'};
+const FALLBACK={name:'Mon canevas',brand:'MA BOUTIQUE',logoText:'MA BOUTIQUE',subject:'Un mot de notre boutique',preheader:'',kicker:'BONJOUR',heading:'Bienvenue chez nous.',intro:'Un petit mot rien que pour vous.',body:'Merci de faire partie de notre univers.',heroImage:'',productImage:'',showHero:true,layout:'editorial',productTitle:'',productDescription:'',productPrice:'',showProduct:false,showPromo:false,promoText:'',promoCode:'',buttonText:'DÉCOUVRIR',buttonUrl:'',reassurance:'',footerText:'Merci pour votre confiance.',footerEmail:'',background:'#f6f1f5',paper:'#ffffff',accent:'#8256a8',dark:'#342340',muted:'#887c8a',font:'Georgia'};
 const state={catalog:[],drafts:[],active:null,mobile:'edit',busy:false,syncDate:null};
 let saveTimer,toastTimer,resizeObserver;
 const $=id=>document.getElementById(id);
@@ -46,6 +46,7 @@ function sanitize(obj,mode='catalog'){
   if(BOOL.has(key)){c[key]=obj[key]===true||obj[key]==='true'}
   else if(COLORS.has(key)){c[key]=color(obj[key],FALLBACK[key])}
   else if(key==='font'){c[key]=safeFont(obj[key])}
+  else if(key==='layout'){c[key]=['editorial','product','minimal'].includes(obj[key])?obj[key]:'editorial'}
   else{const isLocalImage=(key==='heroImage'||key==='productImage')&&String(obj[key]||'').startsWith('data:image/');c[key]=plain(obj[key]??FALLBACK[key],isLocalImage?1500000:(LIMIT[key]||180))}
  }
  c.id=plain(obj.id||uid(),125).replace(/[^a-zA-Z0-9_-]/g,'_')||uid();
@@ -134,7 +135,7 @@ function makeEmail(t){
  const top='style="border-collapse:collapse;border-spacing:0;mso-table-lspace:0pt;mso-table-rspace:0pt;"';
  const cta=t.buttonText?'<tr><td align="center" style="padding:18px 58px 39px;background-color:'+paper+'">'+
   (link?'<a href="'+escape(link)+'" target="_blank" style="display:inline-block;padding:18px 28px;background-color:'+accent+';border-radius:3px;text-decoration:none;color:#ffffff;font:bold 12px Arial,sans-serif;letter-spacing:1.3px;">'+escape(t.buttonText)+'</a>':'<span style="display:inline-block;padding:18px 28px;background-color:'+accent+';border-radius:3px;color:#ffffff;font:bold 12px Arial,sans-serif;letter-spacing:1.3px">'+escape(t.buttonText)+'</span>')+'</td></tr>':'';
- const hero=image?'<tr><td style="background-color:'+bg+'"><img src="'+escape(image)+'" width="600" alt="Visuel '+escape(t.brand)+'" style="display:block;width:600px;height:auto;border:0"></td></tr>':'';
+ const hero=t.showHero&&image?'<tr><td style="background-color:'+bg+'"><img src="'+escape(image)+'" width="600" alt="Visuel '+escape(t.brand)+'" style="display:block;width:600px;height:auto;border:0"></td></tr>':'';
  const product=t.showProduct?'<tr><td style="padding:0 53px 32px;background-color:'+paper+'"><table width="494" cellpadding="0" cellspacing="0" style="width:494px;background-color:'+bg+';border-collapse:collapse">'+
   '<tr>'+(productImg?'<td width="161" valign="middle" style="width:161px"><img src="'+escape(productImg)+'" width="161" alt="" style="display:block;width:161px;height:155px;object-fit:cover;border:0"></td>':'')+
   '<td valign="middle" style="padding:25px 22px"><div style="font:700 11px Arial,sans-serif;letter-spacing:2px;color:'+accent+';margin-bottom:11px">VOTRE SÉLECTION</div>'+
@@ -147,23 +148,25 @@ function makeEmail(t){
   (t.promoCode?'<div style="font:bold 25px Arial,sans-serif;letter-spacing:3px;color:'+dark+';margin-top:13px">'+escape(t.promoCode)+'</div>':'')+
   '</td></tr></table></td></tr>':'';
  const footerEmail=mailto(t.footerEmail);
- return '<table class="email-root" width="600" cellpadding="0" cellspacing="0" align="center" '+top+' style="width:600px;max-width:600px;border-collapse:collapse;border-spacing:0;background-color:'+bg+';table-layout:fixed" role="presentation">'+
-  '<tr><td align="center" style="padding:13px 30px 8px;background-color:'+bg+';font:10px Arial,sans-serif;letter-spacing:1px;color:'+muted+'">'+escape(t.brand)+' · Un message pensé pour vous</td></tr>'+
-  '<tr><td align="center" style="padding:27px 20px;background-color:'+paper+';font:bold 28px '+fontFace+',serif;letter-spacing:3px;color:'+dark+'">'+escape(t.logoText||t.brand)+'</td></tr>'+
-  hero+
-  '<tr><td align="center" style="padding:45px 62px 0;background-color:'+paper+'">'+
+ const mainRows='<tr><td align="center" style="padding:45px 62px 0;background-color:'+paper+'">'+
   '<div style="font:bold 11px Arial,sans-serif;letter-spacing:2.5px;line-height:1.6;color:'+accent+'">'+escape(t.kicker)+'</div>'+
   '<div style="font:normal 43px/1.14 '+fontFace+',Georgia,serif;letter-spacing:-.6px;color:'+dark+';margin:17px 0 19px">'+formatText(t.heading)+'</div>'+
   '<div style="font:normal 18px/1.65 '+fontFace+',Georgia,serif;color:'+dark+';margin:0 0 16px">'+formatText(t.intro)+'</div>'+
-  '<div style="font:normal 14px/1.9 Arial,sans-serif;color:'+muted+';padding-bottom:30px">'+formatText(t.body)+'</div></td></tr>'+
-  product+promo+cta+
+  '<div style="font:normal 14px/1.9 Arial,sans-serif;color:'+muted+';padding-bottom:30px">'+formatText(t.body)+'</div></td></tr>';
+ const bodyRows=t.layout==='product'?(hero+product+mainRows+promo+cta):
+               t.layout==='minimal'?(mainRows+hero+product+promo+cta):
+               (hero+mainRows+product+promo+cta);
+ return '<table class="email-root" width="600" cellpadding="0" cellspacing="0" align="center" '+top+' style="width:600px;max-width:600px;border-collapse:collapse;border-spacing:0;background-color:'+bg+';table-layout:fixed" role="presentation">'+
+  '<tr><td align="center" style="padding:13px 30px 8px;background-color:'+bg+';font:10px Arial,sans-serif;letter-spacing:1px;color:'+muted+'">'+escape(t.brand)+' · Un message pensé pour vous</td></tr>'+
+  '<tr><td align="center" style="padding:27px 20px;background-color:'+paper+';font:bold 28px '+fontFace+',serif;letter-spacing:3px;color:'+dark+'">'+escape(t.logoText||t.brand)+'</td></tr>'+
+  bodyRows+
   '<tr><td align="center" style="padding:0 44px 38px;background-color:'+paper+'"><div style="height:1px;background-color:'+bg+';margin:0 0 29px"></div>'+
   '<div style="font:12px/1.9 Arial,sans-serif;color:'+muted+'">'+formatText(t.reassurance)+'</div></td></tr>'+
   '<tr><td align="center" style="padding:30px 60px 42px;background-color:'+bg+'">'+
   '<div style="font:bold 19px '+fontFace+',Georgia,serif;letter-spacing:1.5px;color:'+dark+'">'+escape(t.brand)+'</div>'+
   '<div style="font:12px/1.75 Arial,sans-serif;color:'+muted+';margin-top:15px">'+formatText(t.footerText)+'</div>'+
   (t.footerEmail?'<div style="font:12px Arial,sans-serif;margin-top:16px"><a href="'+escape(footerEmail)+'" style="color:'+accent+';text-decoration:underline">'+escape(t.footerEmail)+'</a></div>':'')+
-  '<div style="margin-top:24px;font:9px Arial,sans-serif;letter-spacing:.7px;color:'+muted+'">EXEMPLE DE DESIGN EMAIL · À PERSONNALISER</div></td></tr>'+
+  '</td></tr>'+
   '</table>';
 }
 function renderPreview(){
