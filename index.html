@@ -69,7 +69,7 @@
      <details class="edit-group">
       <summary><span><span class="group-icon">🖼</span> Images</span><span class="chev">⌄</span></summary>
       <div class="form-grid">
-       <div class="field full"><label for="heroImage">Visuel principal (dans ton dépôt GitHub)</label><input data-field="heroImage" id="heroImage" placeholder="assets/mon-image.jpg"><small>Exemple : <code>assets/solea-summer.svg</code>. Tu peux demander à ChatGPT de déposer une nouvelle image dans <code>assets/</code>.</small></div>
+       <label class="checkline full"><input type="checkbox" data-field="showHero" id="showHero"><span>Afficher le visuel principal</span></label><div class="field full"><label for="heroImage">Visuel principal (dans ton dépôt GitHub)</label><input data-field="heroImage" id="heroImage" placeholder="assets/mon-image.jpg"><small>Exemple : <code>assets/solea-summer.svg</code>. Tu peux demander à ChatGPT de déposer une nouvelle image dans <code>assets/</code>.</small></div>
        <div class="field full"><label class="buttonlike" for="uploadHero">↑ Utiliser une photo de mon téléphone</label><input id="uploadHero" type="file" accept="image/jpeg,image/png,image/webp,image/svg+xml" hidden><small>Cette photo restera sur ton appareil tant que tu ne la mets pas toi-même sur GitHub.</small></div>
        <div class="field full"><label for="productImage">Image du produit (facultative)</label><input data-field="productImage" id="productImage" placeholder="assets/produit.jpg"></div>
        <div class="field full"><label class="buttonlike" for="uploadProduct">↑ Importer la photo du produit</label><input id="uploadProduct" type="file" accept="image/jpeg,image/png,image/webp,image/svg+xml" hidden></div>
@@ -105,7 +105,7 @@
        <div class="field"><label for="paper">Fond du mail</label><input type="color" data-field="paper" id="paper"></div>
        <div class="field"><label for="dark">Couleur du texte</label><input type="color" data-field="dark" id="dark"></div>
        <div class="field"><label for="muted">Texte secondaire</label><input type="color" data-field="muted" id="muted"></div>
-       <div class="field"><label for="font">Style des titres</label><select data-field="font" id="font"><option value="Georgia">Élégant (Georgia)</option><option value="Arial">Moderne (Arial)</option><option value="Trebuchet MS">Doux (Trebuchet)</option></select></div>
+       <div class="field full"><label for="layout">Mise en page du mail</label><select data-field="layout" id="layout"><option value="editorial">Éditorial : grande image en premier</option><option value="product">Produit : la sélection mise en avant</option><option value="minimal">Épuré : message avant la photo</option></select></div><div class="field"><label for="font">Style des titres</label><select data-field="font" id="font"><option value="Georgia">Élégant (Georgia)</option><option value="Arial">Moderne (Arial)</option><option value="Trebuchet MS">Doux (Trebuchet)</option></select></div>
       </div>
      </details>
     </div>
