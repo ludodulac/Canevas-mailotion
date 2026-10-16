@@ -112,14 +112,15 @@ function ensureDraft(){
  const base=current();if(!base)return null;
  const draft={...base,id:'draft-'+uid(),parentId:base.id,name:base.name+' · Ma version',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
  state.drafts.unshift(draft);state.active='draft:'+draft.id;
- $('name').value=draft.name;
  return draft;
 }
 function handleChange(event){
  const node=event.target;
  if(!node.matches('[data-field]'))return;
- const key=node.dataset.field, draft=ensureDraft();if(!draft)return;
- draft[key]=BOOL.has(key)?node.checked:node.value;
+ const key=node.dataset.field, wasModel=!state.active?.startsWith('draft:'), value=BOOL.has(key)?node.checked:node.value;
+ const draft=ensureDraft();if(!draft)return;
+ draft[key]=value;
+ if(wasModel&&key!=='name')$('name').value=draft.name;
  if((key==='heroImage'||key==='productImage'||key==='logoImage')&&!node.value.trim())draft[key]='';
  draft.updatedAt=new Date().toISOString();
  $('activeName').textContent=draft.name;
