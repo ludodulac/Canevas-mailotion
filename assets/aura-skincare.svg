@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e9eee5"/><stop offset=".55" stop-color="#d6e3d1"/><stop offset="1" stop-color="#aabfae"/></linearGradient><linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e6caa0"/><stop offset=".33" stop-color="#d6a76f"/><stop offset=".77" stop-color="#9b7149"/><stop offset="1" stop-color="#d8b78b"/></linearGradient><linearGradient id="glass2" x1="0" x2="1"><stop stop-color="#f4e1b7" stop-opacity=".96"/><stop offset=".25" stop-color="#dcae74"/><stop offset=".8" stop-color="#94643c"/><stop offset="1" stop-color="#d7ac77"/></linearGradient><linearGradient id="stone" x1="0" y1="0" x2="1" y2=".9"><stop stop-color="#f7f2e7"/><stop offset="1" stop-color="#d9d5c5"/></linearGradient><filter id="shade"><feGaussianBlur stdDeviation="24"/></filter></defs>
+<rect width="1200" height="800" fill="url(#bg)"/><circle cx="1054" cy="98" r="280" fill="#fbf8e9" opacity=".68"/>
+<path d="M0 630q589-44 1200-3v173H0z" fill="#d4ddcf"/>
+<g opacity=".64" fill="#617a55"><path d="M200-60Q295 133 215 413" stroke="#536e53" stroke-width="10" fill="none"/><path d="M250 112q-150-95-182-30 85 94 182 30z"/><path d="M238 173q109-130 174-72-68 102-174 72z"/><path d="M219 268q-142-93-202-27 122 102 202 27z"/><path d="M219 320q113-112 173-62-68 95-173 62z"/></g>
+<g opacity=".4" fill="#788f69"><path d="M1005-35Q880 152 1062 443" fill="none" stroke="#556e51" stroke-width="12"/><path d="M942 114q-1-121-123-96 10 103 123 96z"/><path d="M963 189q95-125 166-61-83 108-166 61z"/><path d="M1013 285q-133-76-151 10 91 54 151-10z"/></g>
+<ellipse cx="613" cy="674" rx="330" ry="44" fill="#6d755c" opacity=".17" filter="url(#shade)"/>
+<rect x="352" y="545" width="531" height="116" rx="25" fill="url(#stone)"/><ellipse cx="618" cy="545" rx="265" ry="41" fill="#f5eee2"/><path d="M352 547v112q258 61 531 0V547" fill="#dfdccc" opacity=".76"/>
+<g transform="translate(468 143)">
+<rect x="98" y="0" width="114" height="95" rx="21" fill="#3c3830"/><path d="M103 16h104" stroke="#696356" stroke-width="5"/>
+<rect x="118" y="-47" width="74" height="61" rx="15" fill="#26241e"/>
+<rect x="141" y="-66" width="30" height="33" rx="11" fill="#cfc9b1"/>
+<path d="M153-69v-40" stroke="#c9cabb" stroke-width="8" stroke-linecap="round"/>
+<rect x="19" y="90" width="273" height="347" rx="52" fill="url(#glass2)" stroke="#d1aa78" stroke-width="6"/>
+<rect x="30" y="104" width="251" height="324" rx="47" fill="url(#glass)" opacity=".69"/>
+<path d="M57 110q-34 187 7 288" stroke="#fff2d0" opacity=".51" stroke-width="16" fill="none"/>
+<rect x="48" y="195" width="214" height="165" rx="3" fill="#f5eee1"/>
+<line x1="77" y1="243" x2="234" y2="243" stroke="#a8a796" stroke-width="1.5"/>
+<text x="155" y="232" font-family="Georgia,serif" font-size="35" text-anchor="middle" fill="#435c45" letter-spacing="5">AURA</text>
+<text x="155" y="265" font-family="Arial" font-size="13" text-anchor="middle" fill="#4d5948" letter-spacing="4">BOTANICS</text>
+<text x="155" y="299" font-family="Georgia,serif" font-size="21" text-anchor="middle" fill="#56614c">Sérum Éclat</text>
+<text x="155" y="328" font-family="Arial" font-size="13" text-anchor="middle" fill="#7e846f" letter-spacing="2">30 ML</text>
+</g>
+<g transform="translate(814 536)"><ellipse cx="90" cy="88" rx="83" ry="17" fill="#68785e" opacity=".12"/><path d="M19 23q77-84 160 7-79 91-160-7z" fill="#c6bf9a"/><path d="M19 23q83 35 160 7" fill="none" stroke="#89856c" stroke-width="5"/><path d="M100 23q-10-44 20-82" fill="none" stroke="#7c956f" stroke-width="8"/><ellipse cx="135" cy="-62" rx="45" ry="16" transform="rotate(-36 135 -62)" fill="#829879"/></g>
+</svg>
