@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800"><defs><linearGradient id="bg" x1=".2" y1="0" x2="1" y2=".8"><stop stop-color="#f1e5d6"/><stop offset=".6" stop-color="#d5baa3"/><stop offset="1" stop-color="#b58f77"/></linearGradient><linearGradient id="bag" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#b68b67"/><stop offset=".45" stop-color="#926746"/><stop offset="1" stop-color="#5c412e"/></linearGradient><linearGradient id="cup" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f6f0e7"/><stop offset="1" stop-color="#c5b5a4"/></linearGradient><filter id="shadow"><feGaussianBlur stdDeviation="25"/></filter></defs>
+<rect width="1200" height="800" fill="url(#bg)"/><path d="M0 598q617-37 1200 5v197H0z" fill="#dac0a6"/><path d="M0 615h1200" stroke="#af947b" stroke-width="5" opacity=".3"/><ellipse cx="658" cy="683" rx="440" ry="58" fill="#5c3d30" opacity=".2" filter="url(#shadow)"/>
+<path d="M154 0q74 84 18 177 87 58 7 154" stroke="#cab09b" stroke-width="8" fill="none" opacity=".4"/><path d="M1041-24q-94 97-38 171-69 60 36 138" stroke="#e7cead" stroke-width="9" fill="none" opacity=".6"/>
+<g transform="translate(283 145) rotate(-4 190 400)">
+<path d="M65 32 349 23 369 433q-173 71-318-2z" fill="url(#bag)"/><path d="M65 31l-8 25q150 48 301-1l-9-32z" fill="#4b3528"/><path d="M61 46q154 52 296 0" stroke="#dbc5a8" opacity=".26" stroke-width="9" fill="none"/>
+<path d="M94 68q-6 269-25 338" fill="none" stroke="#f4dbb9" opacity=".13" stroke-width="23"/>
+<rect x="107" y="125" width="207" height="224" rx="3" fill="#e9dcc8"/><text x="210" y="177" font-family="Georgia,serif" text-anchor="middle" font-size="52" letter-spacing="5" fill="#3b2a21">NOMA</text><text x="210" y="204" font-family="Arial" text-anchor="middle" font-size="17" letter-spacing="6" fill="#71513d">COFFEE</text>
+<path d="M174 229q36-42 70 0 22 38-36 86-45-44-34-86z" fill="#98735b"/><path d="M210 234q-20 31 0 57" stroke="#e5c8a7" fill="none" stroke-width="6" stroke-linecap="round"/>
+<text x="210" y="331" text-anchor="middle" font-family="Arial" font-size="11" fill="#81634c" letter-spacing="3">TORRÉFACTION DOUCE</text>
+</g>
+<g transform="translate(714 376)">
+<ellipse cx="172" cy="230" rx="199" ry="33" fill="#8a5949" opacity=".17" filter="url(#shadow)"/>
+<path d="M56 73h225v144q-115 112-225 0z" fill="url(#cup)"/><ellipse cx="168" cy="73" rx="112" ry="30" fill="#fff8ef"/><ellipse cx="169" cy="75" rx="89" ry="19" fill="#694331"/><path d="M95 70q73-28 144 3-45 21-144-3z" fill="#af7855" opacity=".61"/>
+<path d="M277 103q133-32 119 75-8 57-121 22" fill="none" stroke="#ede2d5" stroke-width="31"/>
+<path d="M121 20q-26-30 2-65M169 20q-27-49 9-89M212 18q-22-38 7-74" stroke="#ffffff" opacity=".49" stroke-width="10" stroke-linecap="round" fill="none"/>
+<ellipse cx="170" cy="249" rx="163" ry="18" fill="#dfcfbc"/>
+</g>
+<g fill="#67412b"><ellipse cx="238" cy="665" rx="15" ry="10" transform="rotate(24 238 665)"/><ellipse cx="290" cy="691" rx="16" ry="10" transform="rotate(-21 290 691)"/><ellipse cx="378" cy="685" rx="15" ry="10" transform="rotate(20 378 685)"/><ellipse cx="1137" cy="639" rx="15" ry="10" transform="rotate(-30 1137 639)"/></g>
+</svg>
