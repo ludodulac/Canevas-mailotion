@@ -43,7 +43,7 @@ function sanitize(obj,mode='catalog'){
  if(!obj||typeof obj!=='object'||Array.isArray(obj))return null;
  const c={...FALLBACK};
  for(const key of FIELD_NAMES){
-  if(BOOL.has(key)){c[key]=obj[key]===true||obj[key]==='true'}
+  if(BOOL.has(key)){c[key]=obj[key]===undefined?!!FALLBACK[key]:(obj[key]===true||obj[key]==='true')}
   else if(COLORS.has(key)){c[key]=color(obj[key],FALLBACK[key])}
   else if(key==='font'){c[key]=safeFont(obj[key])}
   else if(key==='layout'){c[key]=['editorial','product','minimal'].includes(obj[key])?obj[key]:'editorial'}
@@ -132,7 +132,7 @@ function makeEmail(t){
  const bg=color(t.background,FALLBACK.background),paper=color(t.paper,FALLBACK.paper),accent=color(t.accent,FALLBACK.accent),
  dark=color(t.dark,FALLBACK.dark),muted=color(t.muted,FALLBACK.muted),font=safeFont(t.font);
  const image=safeImage(t.heroImage),productImg=safeImage(t.productImage)||image,link=safeLink(t.buttonUrl),fontFace=font==='Trebuchet MS'?"'Trebuchet MS'":font;
- const top='style="border-collapse:collapse;border-spacing:0;mso-table-lspace:0pt;mso-table-rspace:0pt;"';
+ const top='';
  const cta=t.buttonText?'<tr><td align="center" style="padding:18px 58px 39px;background-color:'+paper+'">'+
   (link?'<a href="'+escape(link)+'" target="_blank" style="display:inline-block;padding:18px 28px;background-color:'+accent+';border-radius:3px;text-decoration:none;color:#ffffff;font:bold 12px Arial,sans-serif;letter-spacing:1.3px;">'+escape(t.buttonText)+'</a>':'<span style="display:inline-block;padding:18px 28px;background-color:'+accent+';border-radius:3px;color:#ffffff;font:bold 12px Arial,sans-serif;letter-spacing:1.3px">'+escape(t.buttonText)+'</span>')+'</td></tr>':'';
  const hero=t.showHero&&image?'<tr><td style="background-color:'+bg+'"><img src="'+escape(image)+'" width="600" alt="Visuel '+escape(t.brand)+'" style="display:block;width:600px;height:auto;border:0"></td></tr>':'';
