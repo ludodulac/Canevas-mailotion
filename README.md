@@ -13,7 +13,8 @@ Sur Android Chrome, cliquer sur le menu **⋮ → Ajouter à l'écran d'accueil*
 ## Fonctionnalités
 - Galerie de modèles et aperçu de l'email complet en direct.
 - 3 modèles fictifs inclus : **Bienvenue SOLÉA**, **Panier abandonné AURA BOTANICS**, **Après-achat NOMA COFFEE**.
-- Personnaliser le texte, l'objet, le logo textuel, les couleurs, le bouton, la promotion, les blocs produits et les images.
+- Personnaliser le texte, l'objet, le logo en texte **ou en image**, les couleurs, le bouton, la promotion, les blocs produits et les images.
+- Choisir parmi trois mises en page : **éditoriale**, **mise en avant produit**, **épurée**, et afficher/masquer le visuel principal.
 - Dupliquer les modèles pour préparer une variante par boutique. Les variantes sont sauvegardées automatiquement **en local** dans le navigateur.
 - Importer une image JPG/PNG/WebP depuis son téléphone : elle est compressée puis sauvegardée dans la version locale.
 - Exporter en **PNG** (email entier sans mockup), partager l'image depuis Android, exporter HTML et enregistrer en PDF (via la fonction d'impression).
@@ -34,7 +35,7 @@ Le dossier `assets/` contient les images des modèles. Le fichier `templates.jso
 
 Pour ajouter un modèle, une conversation connectée à GitHub peut :
 1. Lire `templates.json` et ajouter un objet avec les mêmes champs et un `id` unique dans `templates[]`.
-2. Ajouter un visuel original sous `assets/` (SVG de préférence, ou une image binaire correctement déposée), et référencer le chemin dans `heroImage` et éventuellement `productImage`.
+2. Ajouter un visuel original sous `assets/` (SVG de préférence, ou une image binaire correctement déposée), et référencer le chemin dans `heroImage`, `productImage` ou `logoImage`. Le champ `layout` accepte `editorial`, `product`, `minimal`; `showHero` permet de masquer la photo principale.
 3. Effectuer les commits sur la branche principale `main`, puis indiquer le nouveau modèle.
 4. L'utilisateur clique sur **Actualiser depuis GitHub** ; le canevas s'affiche automatiquement, et les brouillons privés restent inchangés.
 
