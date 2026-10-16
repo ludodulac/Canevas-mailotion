@@ -36,7 +36,8 @@
       "muted": "#7e746e",
       "font": "Georgia",
       "showHero": true,
-      "layout": "editorial"
+      "layout": "editorial",
+      "logoImage": ""
     },
     {
       "id": "panier-aura",
@@ -72,7 +73,8 @@
       "muted": "#738079",
       "font": "Georgia",
       "showHero": true,
-      "layout": "product"
+      "layout": "product",
+      "logoImage": ""
     },
     {
       "id": "apresachat-noma",
@@ -108,7 +110,8 @@
       "muted": "#85766b",
       "font": "Georgia",
       "showHero": true,
-      "layout": "minimal"
+      "layout": "minimal",
+      "logoImage": ""
     }
   ]
 }
