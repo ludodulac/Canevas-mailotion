@@ -34,7 +34,9 @@
       "accent": "#bc7262",
       "dark": "#44362e",
       "muted": "#7e746e",
-      "font": "Georgia"
+      "font": "Georgia",
+      "showHero": true,
+      "layout": "editorial"
     },
     {
       "id": "panier-aura",
@@ -68,7 +70,9 @@
       "accent": "#64806c",
       "dark": "#2c4234",
       "muted": "#738079",
-      "font": "Georgia"
+      "font": "Georgia",
+      "showHero": true,
+      "layout": "product"
     },
     {
       "id": "apresachat-noma",
@@ -102,7 +106,9 @@
       "accent": "#995b3e",
       "dark": "#39271f",
       "muted": "#85766b",
-      "font": "Georgia"
+      "font": "Georgia",
+      "showHero": true,
+      "layout": "minimal"
     }
   ]
 }
