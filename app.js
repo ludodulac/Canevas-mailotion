@@ -46,7 +46,7 @@ function sanitize(obj,mode='catalog'){
   if(BOOL.has(key)){c[key]=obj[key]===true||obj[key]==='true'}
   else if(COLORS.has(key)){c[key]=color(obj[key],FALLBACK[key])}
   else if(key==='font'){c[key]=safeFont(obj[key])}
-  else{c[key]=plain(obj[key]??FALLBACK[key],LIMIT[key]||180)}
+  else{const isLocalImage=(key==='heroImage'||key==='productImage')&&String(obj[key]||'').startsWith('data:image/');c[key]=plain(obj[key]??FALLBACK[key],isLocalImage?1500000:(LIMIT[key]||180))}
  }
  c.id=plain(obj.id||uid(),125).replace(/[^a-zA-Z0-9_-]/g,'_')||uid();
  c.type=plain(obj.type||'Email marketing',70);
@@ -130,7 +130,7 @@ function formatText(str){return escape(str).replace(/\n/g,'<br>')}
 function makeEmail(t){
  const bg=color(t.background,FALLBACK.background),paper=color(t.paper,FALLBACK.paper),accent=color(t.accent,FALLBACK.accent),
  dark=color(t.dark,FALLBACK.dark),muted=color(t.muted,FALLBACK.muted),font=safeFont(t.font);
- const image=safeImage(t.heroImage),productImg=safeImage(t.productImage)||image,link=safeLink(t.buttonUrl);
+ const image=safeImage(t.heroImage),productImg=safeImage(t.productImage)||image,link=safeLink(t.buttonUrl),fontFace=font==='Trebuchet MS'?"'Trebuchet MS'":font;
  const top='style="border-collapse:collapse;border-spacing:0;mso-table-lspace:0pt;mso-table-rspace:0pt;"';
  const cta=t.buttonText?'<tr><td align="center" style="padding:18px 58px 39px;background-color:'+paper+'">'+
   (link?'<a href="'+escape(link)+'" target="_blank" style="display:inline-block;padding:18px 28px;background-color:'+accent+';border-radius:3px;text-decoration:none;color:#ffffff;font:bold 12px Arial,sans-serif;letter-spacing:1.3px;">'+escape(t.buttonText)+'</a>':'<span style="display:inline-block;padding:18px 28px;background-color:'+accent+';border-radius:3px;color:#ffffff;font:bold 12px Arial,sans-serif;letter-spacing:1.3px">'+escape(t.buttonText)+'</span>')+'</td></tr>':'';
@@ -138,7 +138,7 @@ function makeEmail(t){
  const product=t.showProduct?'<tr><td style="padding:0 53px 32px;background-color:'+paper+'"><table width="494" cellpadding="0" cellspacing="0" style="width:494px;background-color:'+bg+';border-collapse:collapse">'+
   '<tr>'+(productImg?'<td width="161" valign="middle" style="width:161px"><img src="'+escape(productImg)+'" width="161" alt="" style="display:block;width:161px;height:155px;object-fit:cover;border:0"></td>':'')+
   '<td valign="middle" style="padding:25px 22px"><div style="font:700 11px Arial,sans-serif;letter-spacing:2px;color:'+accent+';margin-bottom:11px">VOTRE SÉLECTION</div>'+
-  '<div style="font:22px '+font+',serif;line-height:1.27;color:'+dark+'">'+formatText(t.productTitle)+'</div>'+
+  '<div style="font:22px '+fontFace+',serif;line-height:1.27;color:'+dark+'">'+formatText(t.productTitle)+'</div>'+
   '<div style="font:13px Arial,sans-serif;line-height:1.7;color:'+muted+';margin-top:7px">'+formatText(t.productDescription)+'</div>'+
   '<div style="font:700 17px Arial,sans-serif;color:'+dark+';margin-top:13px">'+escape(t.productPrice)+'</div></td></tr></table></td></tr>':'';
  const promo=t.showPromo?'<tr><td align="center" style="padding:5px 60px 30px;background-color:'+paper+'">'+
@@ -149,18 +149,18 @@ function makeEmail(t){
  const footerEmail=mailto(t.footerEmail);
  return '<table class="email-root" width="600" cellpadding="0" cellspacing="0" align="center" '+top+' style="width:600px;max-width:600px;border-collapse:collapse;border-spacing:0;background-color:'+bg+';table-layout:fixed" role="presentation">'+
   '<tr><td align="center" style="padding:13px 30px 8px;background-color:'+bg+';font:10px Arial,sans-serif;letter-spacing:1px;color:'+muted+'">'+escape(t.brand)+' · Un message pensé pour vous</td></tr>'+
-  '<tr><td align="center" style="padding:27px 20px;background-color:'+paper+';font:bold 28px '+font+',serif;letter-spacing:3px;color:'+dark+'">'+escape(t.logoText||t.brand)+'</td></tr>'+
+  '<tr><td align="center" style="padding:27px 20px;background-color:'+paper+';font:bold 28px '+fontFace+',serif;letter-spacing:3px;color:'+dark+'">'+escape(t.logoText||t.brand)+'</td></tr>'+
   hero+
   '<tr><td align="center" style="padding:45px 62px 0;background-color:'+paper+'">'+
   '<div style="font:bold 11px Arial,sans-serif;letter-spacing:2.5px;line-height:1.6;color:'+accent+'">'+escape(t.kicker)+'</div>'+
-  '<div style="font:normal 43px/1.14 '+font+',Georgia,serif;letter-spacing:-.6px;color:'+dark+';margin:17px 0 19px">'+formatText(t.heading)+'</div>'+
-  '<div style="font:normal 18px/1.65 '+font+',Georgia,serif;color:'+dark+';margin:0 0 16px">'+formatText(t.intro)+'</div>'+
+  '<div style="font:normal 43px/1.14 '+fontFace+',Georgia,serif;letter-spacing:-.6px;color:'+dark+';margin:17px 0 19px">'+formatText(t.heading)+'</div>'+
+  '<div style="font:normal 18px/1.65 '+fontFace+',Georgia,serif;color:'+dark+';margin:0 0 16px">'+formatText(t.intro)+'</div>'+
   '<div style="font:normal 14px/1.9 Arial,sans-serif;color:'+muted+';padding-bottom:30px">'+formatText(t.body)+'</div></td></tr>'+
   product+promo+cta+
   '<tr><td align="center" style="padding:0 44px 38px;background-color:'+paper+'"><div style="height:1px;background-color:'+bg+';margin:0 0 29px"></div>'+
   '<div style="font:12px/1.9 Arial,sans-serif;color:'+muted+'">'+formatText(t.reassurance)+'</div></td></tr>'+
   '<tr><td align="center" style="padding:30px 60px 42px;background-color:'+bg+'">'+
-  '<div style="font:bold 19px '+font+',Georgia,serif;letter-spacing:1.5px;color:'+dark+'">'+escape(t.brand)+'</div>'+
+  '<div style="font:bold 19px '+fontFace+',Georgia,serif;letter-spacing:1.5px;color:'+dark+'">'+escape(t.brand)+'</div>'+
   '<div style="font:12px/1.75 Arial,sans-serif;color:'+muted+';margin-top:15px">'+formatText(t.footerText)+'</div>'+
   (t.footerEmail?'<div style="font:12px Arial,sans-serif;margin-top:16px"><a href="'+escape(footerEmail)+'" style="color:'+accent+';text-decoration:underline">'+escape(t.footerEmail)+'</a></div>':'')+
   '<div style="margin-top:24px;font:9px Arial,sans-serif;letter-spacing:.7px;color:'+muted+'">EXEMPLE DE DESIGN EMAIL · À PERSONNALISER</div></td></tr>'+
