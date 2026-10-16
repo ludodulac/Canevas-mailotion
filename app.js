@@ -3,11 +3,11 @@
 const REPO='ludodulac/Canevas-mailotion';
 const STORE='mailotion-studio-v1';
 const CATALOG_CACHE='mailotion-studio-catalog-v1';
-const FIELD_NAMES=['name','brand','logoText','subject','preheader','kicker','heading','intro','body','heroImage','productImage','productTitle','productDescription','productPrice','showProduct','showPromo','promoText','promoCode','buttonText','buttonUrl','reassurance','footerText','footerEmail','background','paper','accent','dark','muted','font','showHero','layout'];
+const FIELD_NAMES=['name','brand','logoText','subject','preheader','kicker','heading','intro','body','heroImage','productImage','logoImage','productTitle','productDescription','productPrice','showProduct','showPromo','promoText','promoCode','buttonText','buttonUrl','reassurance','footerText','footerEmail','background','paper','accent','dark','muted','font','showHero','layout'];
 const BOOL=new Set(['showProduct','showPromo','showHero']);
 const COLORS=new Set(['background','paper','accent','dark','muted']);
-const LIMIT={name:110,brand:85,logoText:110,subject:180,preheader:180,kicker:130,heading:220,intro:500,body:1600,heroImage:500,productImage:500,productTitle:110,productDescription:180,productPrice:35,promoText:120,promoCode:55,buttonText:100,buttonUrl:600,reassurance:360,footerText:400,footerEmail:160};
-const FALLBACK={name:'Mon canevas',brand:'MA BOUTIQUE',logoText:'MA BOUTIQUE',subject:'Un mot de notre boutique',preheader:'',kicker:'BONJOUR',heading:'Bienvenue chez nous.',intro:'Un petit mot rien que pour vous.',body:'Merci de faire partie de notre univers.',heroImage:'',productImage:'',showHero:true,layout:'editorial',productTitle:'',productDescription:'',productPrice:'',showProduct:false,showPromo:false,promoText:'',promoCode:'',buttonText:'DÉCOUVRIR',buttonUrl:'',reassurance:'',footerText:'Merci pour votre confiance.',footerEmail:'',background:'#f6f1f5',paper:'#ffffff',accent:'#8256a8',dark:'#342340',muted:'#887c8a',font:'Georgia'};
+const LIMIT={name:110,brand:85,logoText:110,subject:180,preheader:180,kicker:130,heading:220,intro:500,body:1600,heroImage:500,productImage:500,logoImage:500,productTitle:110,productDescription:180,productPrice:35,promoText:120,promoCode:55,buttonText:100,buttonUrl:600,reassurance:360,footerText:400,footerEmail:160};
+const FALLBACK={name:'Mon canevas',brand:'MA BOUTIQUE',logoText:'MA BOUTIQUE',subject:'Un mot de notre boutique',preheader:'',kicker:'BONJOUR',heading:'Bienvenue chez nous.',intro:'Un petit mot rien que pour vous.',body:'Merci de faire partie de notre univers.',heroImage:'',productImage:'',logoImage:'',showHero:true,layout:'editorial',productTitle:'',productDescription:'',productPrice:'',showProduct:false,showPromo:false,promoText:'',promoCode:'',buttonText:'DÉCOUVRIR',buttonUrl:'',reassurance:'',footerText:'Merci pour votre confiance.',footerEmail:'',background:'#f6f1f5',paper:'#ffffff',accent:'#8256a8',dark:'#342340',muted:'#887c8a',font:'Georgia'};
 const state={catalog:[],drafts:[],active:null,mobile:'edit',busy:false,syncDate:null};
 let saveTimer,toastTimer,resizeObserver;
 const $=id=>document.getElementById(id);
@@ -47,7 +47,7 @@ function sanitize(obj,mode='catalog'){
   else if(COLORS.has(key)){c[key]=color(obj[key],FALLBACK[key])}
   else if(key==='font'){c[key]=safeFont(obj[key])}
   else if(key==='layout'){c[key]=['editorial','product','minimal'].includes(obj[key])?obj[key]:'editorial'}
-  else{const isLocalImage=(key==='heroImage'||key==='productImage')&&String(obj[key]||'').startsWith('data:image/');c[key]=plain(obj[key]??FALLBACK[key],isLocalImage?1500000:(LIMIT[key]||180))}
+  else{const isLocalImage=(key==='heroImage'||key==='productImage'||key==='logoImage')&&String(obj[key]||'').startsWith('data:image/');c[key]=plain(obj[key]??FALLBACK[key],isLocalImage?1500000:(LIMIT[key]||180))}
  }
  c.id=plain(obj.id||uid(),125).replace(/[^a-zA-Z0-9_-]/g,'_')||uid();
  c.type=plain(obj.type||'Email marketing',70);
@@ -100,6 +100,7 @@ function populateFields(){
    field[BOOL.has(k)?'checked':'value']=BOOL.has(k)?!!t[k]:(t[k]||'');
    if(k==='heroImage'&&t.heroImage?.startsWith('data:'))field.value=''; // photo locale stockée mais pas affichée sous forme base64 illisible
    if(k==='productImage'&&t.productImage?.startsWith('data:'))field.value='';
+   if(k==='logoImage'&&t.logoImage?.startsWith('data:'))field.value='';
  }
  $('activeName').textContent=t.name;
  $('activeType').textContent=t.type+(state.active?.startsWith('draft:')?' · Mon brouillon':' · Modèle');
@@ -119,7 +120,7 @@ function handleChange(event){
  if(!node.matches('[data-field]'))return;
  const key=node.dataset.field, draft=ensureDraft();if(!draft)return;
  draft[key]=BOOL.has(key)?node.checked:node.value;
- if((key==='heroImage'||key==='productImage')&&!node.value.trim())draft[key]='';
+ if((key==='heroImage'||key==='productImage'||key==='logoImage')&&!node.value.trim())draft[key]='';
  draft.updatedAt=new Date().toISOString();
  $('activeName').textContent=draft.name;
  $('activeType').textContent=draft.type+' · Mon brouillon';
@@ -131,7 +132,7 @@ function formatText(str){return escape(str).replace(/\n/g,'<br>')}
 function makeEmail(t){
  const bg=color(t.background,FALLBACK.background),paper=color(t.paper,FALLBACK.paper),accent=color(t.accent,FALLBACK.accent),
  dark=color(t.dark,FALLBACK.dark),muted=color(t.muted,FALLBACK.muted),font=safeFont(t.font);
- const image=safeImage(t.heroImage),productImg=safeImage(t.productImage)||image,link=safeLink(t.buttonUrl),fontFace=font==='Trebuchet MS'?"'Trebuchet MS'":font;
+ const image=safeImage(t.heroImage),productImg=safeImage(t.productImage)||image,logoImg=safeImage(t.logoImage),link=safeLink(t.buttonUrl),fontFace=font==='Trebuchet MS'?"'Trebuchet MS'":font;
  const top='';
  const cta=t.buttonText?'<tr><td align="center" style="padding:18px 58px 39px;background-color:'+paper+'">'+
   (link?'<a href="'+escape(link)+'" target="_blank" style="display:inline-block;padding:18px 28px;background-color:'+accent+';border-radius:3px;text-decoration:none;color:#ffffff;font:bold 12px Arial,sans-serif;letter-spacing:1.3px;">'+escape(t.buttonText)+'</a>':'<span style="display:inline-block;padding:18px 28px;background-color:'+accent+';border-radius:3px;color:#ffffff;font:bold 12px Arial,sans-serif;letter-spacing:1.3px">'+escape(t.buttonText)+'</span>')+'</td></tr>':'';
@@ -158,7 +159,7 @@ function makeEmail(t){
                (hero+mainRows+product+promo+cta);
  return '<table class="email-root" width="600" cellpadding="0" cellspacing="0" align="center" '+top+' style="width:600px;max-width:600px;border-collapse:collapse;border-spacing:0;background-color:'+bg+';table-layout:fixed" role="presentation">'+
   '<tr><td align="center" style="padding:13px 30px 8px;background-color:'+bg+';font:10px Arial,sans-serif;letter-spacing:1px;color:'+muted+'">'+escape(t.brand)+' · Un message pensé pour vous</td></tr>'+
-  '<tr><td align="center" style="padding:27px 20px;background-color:'+paper+';font:bold 28px '+fontFace+',serif;letter-spacing:3px;color:'+dark+'">'+escape(t.logoText||t.brand)+'</td></tr>'+
+  '<tr><td align="center" style="padding:27px 20px;background-color:'+paper+';font:bold 28px '+fontFace+',serif;letter-spacing:3px;color:'+dark+'">'+(logoImg?'<img src="'+escape(logoImg)+'" width="220" alt="'+escape(t.brand)+'" style="display:block;border:0;width:220px;height:auto;margin:0 auto">':escape(t.logoText||t.brand))+'</td></tr>'+
   bodyRows+
   '<tr><td align="center" style="padding:0 44px 38px;background-color:'+paper+'"><div style="height:1px;background-color:'+bg+';margin:0 0 29px"></div>'+
   '<div style="font:12px/1.9 Arial,sans-serif;color:'+muted+'">'+formatText(t.reassurance)+'</div></td></tr>'+
@@ -367,6 +368,7 @@ function init(){
  $('refreshBtn').addEventListener('click',()=>fetchCatalog());
  $('uploadHero').addEventListener('change',async e=>{await loadPhoto(e.target.files[0],'heroImage');e.target.value=''});
  $('uploadProduct').addEventListener('change',async e=>{await loadPhoto(e.target.files[0],'productImage');e.target.value=''});
+ $('uploadLogo').addEventListener('change',async e=>{await loadPhoto(e.target.files[0],'logoImage');e.target.value=''});
  $('pngBtn').addEventListener('click',downloadPNG);
  $('shareBtn').addEventListener('click',sharePNG);
  $('htmlBtn').addEventListener('click',downloadHTML);
