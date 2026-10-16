@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#241433">
+<meta name="description" content="Studio Mailotion : créez des exemples d'emails e-commerce personnalisables et exportez-les en image PNG, sans abonnement Canva.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Canevas Mailotion">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./style.css">
+<title>Mailotion Studio — Canevas d'emails</title>
+</head>
+<body>
+<header class="site-header">
+ <div class="shell">
+  <div class="topbar">
+   <div class="brand"><span class="brandmark" aria-hidden="true">✦</span><strong>mailotion<span class="brand-dot">.</span></strong><span class="brand-label">STUDIO</span></div>
+   <button id="refreshBtn" type="button" class="subtle-top" title="Récupérer les nouveaux modèles ajoutés par ChatGPT">↻ <span>Actualiser depuis GitHub</span></button>
+  </div>
+  <div class="hero">
+   <div><span class="eyebrow">LE STUDIO EMAIL DE MAILOTION</span><h1>Un bel email.<br><em>En quelques clics.</em></h1>
+   <p>Choisis un canevas, personnalise les textes, les couleurs et les images. Présente à tes boutiques un exemple prêt à montrer.</p>
+   <div class="hero-chips"><span>✓ Aucun abonnement</span><span>✓ Export PNG</span><span>✓ Modèles modifiables</span></div></div>
+   <div class="hero-side" aria-hidden="true"><span>✉</span><div>CRÉER · PERSONNALISER · PRÉSENTER</div></div>
+  </div>
+ </div>
+</header>
+<main class="shell">
+ <section class="library panel">
+  <div class="row-head"><div><div class="eyebrow purple">01 — MA BIBLIOTHÈQUE</div><h2>Choisis ton canevas</h2><p>Un modèle à personnaliser en fonction de chaque boutique.</p></div>
+  <span class="counter" id="modelCount">0 canevas</span></div>
+  <div class="model-list" id="modelList" aria-label="Liste des modèles d'emails"></div>
+  <div class="library-foot">
+    <div class="storage-dot"><span>●</span> <span id="syncState">Chargement des modèles…</span></div>
+    <button type="button" id="importTemplateBtn" class="mini-link">＋ Importer un canevas JSON</button>
+    <input type="file" id="importTemplateFile" accept=".json,application/json" hidden>
+  </div>
+ </section>
+ <section class="workspace panel">
+  <div class="workspace-bar">
+   <div><span class="eyebrow purple">02 — MON ÉDITEUR</span><h2 id="activeName">Choisir un canevas</h2><span id="activeType" class="type-pill">Canevas d'email</span></div>
+   <div class="work-tools">
+    <button id="duplicateBtn" class="outline-btn" type="button">⧉ Dupliquer</button>
+    <button id="resetBtn" class="outline-btn" type="button">↺ Réinitialiser</button>
+    <button id="deleteBtn" class="outline-btn danger" type="button" hidden>Supprimer</button>
+   </div>
+  </div>
+  <div class="mobile-switch" role="group" aria-label="Basculer entre édition et aperçu"><button type="button" id="mobileEdit" class="mobile-tab active">✎ Personnaliser</button><button type="button" id="mobilePreview" class="mobile-tab">◉ Aperçu</button></div>
+  <div class="columns">
+   <section class="edit-column" id="editColumn" aria-label="Formulaire de personnalisation">
+    <div class="edit-heading"><div><h3>Personnaliser le mail</h3><p>Les modifications se voient immédiatement dans l'aperçu.</p></div><span id="saveIndicator" class="save-indicator">○ Modèle</span></div>
+    <div class="editing-body">
+     <details class="edit-group" open>
+      <summary><span><span class="group-icon">✎</span> Identité & textes</span><span class="chev">⌄</span></summary>
+      <div class="form-grid">
+       <div class="field full"><label for="name">Nom du canevas</label><input data-field="name" id="name" maxlength="110" placeholder="Ex. Bienvenue — Boutique Léa"></div>
+       <div class="field full"><label for="brand">Nom de la marque</label><input data-field="brand" id="brand" maxlength="85" placeholder="Ex. SOLÉA"></div>
+       <div class="field full"><label for="logoText">Logo en texte</label><input data-field="logoText" id="logoText" maxlength="110" placeholder="Ex. SOLÉA"></div>
+       <div class="field full"><label for="subject">Objet de l'email</label><input data-field="subject" id="subject" maxlength="180"></div>
+       <div class="field full"><label for="preheader">Pré-en-tête</label><input data-field="preheader" id="preheader" maxlength="180"></div>
+       <div class="field full"><label for="kicker">Petit titre en capitales</label><input data-field="kicker" id="kicker" maxlength="130"></div>
+       <div class="field full"><label for="heading">Grand titre</label><textarea data-field="heading" id="heading" rows="2" maxlength="220"></textarea></div>
+       <div class="field full"><label for="intro">Phrase d'accroche</label><textarea data-field="intro" id="intro" rows="3" maxlength="500"></textarea></div>
+       <div class="field full"><label for="body">Texte principal</label><textarea data-field="body" id="body" rows="4" maxlength="1600"></textarea></div>
+      </div>
+     </details>
+     <details class="edit-group">
+      <summary><span><span class="group-icon">🖼</span> Images</span><span class="chev">⌄</span></summary>
+      <div class="form-grid">
+       <div class="field full"><label for="heroImage">Visuel principal (dans ton dépôt GitHub)</label><input data-field="heroImage" id="heroImage" placeholder="assets/mon-image.jpg"><small>Exemple : <code>assets/solea-summer.svg</code>. Tu peux demander à ChatGPT de déposer une nouvelle image dans <code>assets/</code>.</small></div>
+       <div class="field full"><label class="buttonlike" for="uploadHero">↑ Utiliser une photo de mon téléphone</label><input id="uploadHero" type="file" accept="image/jpeg,image/png,image/webp,image/svg+xml" hidden><small>Cette photo restera sur ton appareil tant que tu ne la mets pas toi-même sur GitHub.</small></div>
+       <div class="field full"><label for="productImage">Image du produit (facultative)</label><input data-field="productImage" id="productImage" placeholder="assets/produit.jpg"></div>
+       <div class="field full"><label class="buttonlike" for="uploadProduct">↑ Importer la photo du produit</label><input id="uploadProduct" type="file" accept="image/jpeg,image/png,image/webp,image/svg+xml" hidden></div>
+      </div>
+     </details>
+     <details class="edit-group">
+      <summary><span><span class="group-icon">⌁</span> Produit & offre</span><span class="chev">⌄</span></summary>
+      <div class="form-grid">
+       <label class="checkline full"><input type="checkbox" data-field="showProduct" id="showProduct"><span>Afficher un bloc produit</span></label>
+       <div class="field full"><label for="productTitle">Nom du produit</label><input data-field="productTitle" id="productTitle" maxlength="110"></div>
+       <div class="field full"><label for="productDescription">Description du produit</label><input data-field="productDescription" id="productDescription" maxlength="180"></div>
+       <div class="field full"><label for="productPrice">Prix affiché</label><input data-field="productPrice" id="productPrice" maxlength="35" placeholder="29,90 €"></div>
+       <label class="checkline full"><input type="checkbox" data-field="showPromo" id="showPromo"><span>Afficher un code promo</span></label>
+       <div class="field full"><label for="promoText">Texte de l'offre</label><input data-field="promoText" id="promoText" maxlength="120"></div>
+       <div class="field full"><label for="promoCode">Code promotionnel</label><input data-field="promoCode" id="promoCode" maxlength="55"></div>
+      </div>
+     </details>
+     <details class="edit-group">
+      <summary><span><span class="group-icon">↗</span> Bouton & conclusion</span><span class="chev">⌄</span></summary>
+      <div class="form-grid">
+       <div class="field full"><label for="buttonText">Texte du bouton</label><input data-field="buttonText" id="buttonText" maxlength="100"></div>
+       <div class="field full"><label for="buttonUrl">Lien du bouton</label><input data-field="buttonUrl" id="buttonUrl" maxlength="600" placeholder="https://..."></div>
+       <div class="field full"><label for="reassurance">Argument de réassurance</label><textarea data-field="reassurance" id="reassurance" rows="2" maxlength="360"></textarea></div>
+       <div class="field full"><label for="footerText">Texte de bas de mail</label><textarea data-field="footerText" id="footerText" rows="2" maxlength="400"></textarea></div>
+       <div class="field full"><label for="footerEmail">Email de contact de la boutique</label><input data-field="footerEmail" id="footerEmail" maxlength="160"></div>
+      </div>
+     </details>
+     <details class="edit-group">
+      <summary><span><span class="group-icon">◐</span> Couleurs & typographie</span><span class="chev">⌄</span></summary>
+      <div class="form-grid color-grid">
+       <div class="field"><label for="accent">Couleur principale</label><input type="color" data-field="accent" id="accent"></div>
+       <div class="field"><label for="background">Fond extérieur</label><input type="color" data-field="background" id="background"></div>
+       <div class="field"><label for="paper">Fond du mail</label><input type="color" data-field="paper" id="paper"></div>
+       <div class="field"><label for="dark">Couleur du texte</label><input type="color" data-field="dark" id="dark"></div>
+       <div class="field"><label for="muted">Texte secondaire</label><input type="color" data-field="muted" id="muted"></div>
+       <div class="field"><label for="font">Style des titres</label><select data-field="font" id="font"><option value="Georgia">Élégant (Georgia)</option><option value="Arial">Moderne (Arial)</option><option value="Trebuchet MS">Doux (Trebuchet)</option></select></div>
+      </div>
+     </details>
+    </div>
+    <div class="edit-footer"><p>🔒 Tes versions personnalisées sont enregistrées sur ce téléphone, pas dans le dépôt GitHub public.</p>
+    <button id="backupBtn" class="text-action" type="button">Sauvegarder mes créations (JSON)</button> · <button id="restoreBtn" class="text-action" type="button">Restaurer une sauvegarde</button>
+    <input type="file" id="restoreFile" accept=".json,application/json" hidden></div>
+   </section>
+   <section class="preview-column" id="previewColumn" aria-label="Aperçu du mail">
+    <div class="preview-top"><div><h3>Aperçu du mail</h3><p>Rendu client • mobile ou ordinateur</p></div><span class="live-indicator">● EN DIRECT</span></div>
+    <div class="inbox-head"><span class="inbox-avatar" id="inboxAvatar">M</span><div class="inbox-subject"><strong id="subjectPreview">Objet du mail</strong><small id="preheaderPreview">Pré-en-tête</small></div><span class="inbox-menu">⋮</span></div>
+    <div class="email-stage">
+     <div class="email-clip" id="emailClip"><div id="emailCanvas" class="email-canvas"></div></div>
+    </div>
+    <div class="preview-actions">
+     <button type="button" id="pngBtn" class="action-primary"><span>↓</span> Télécharger l'image PNG</button>
+     <button type="button" id="shareBtn" class="action-outline">↗ Partager</button>
+     <button type="button" id="htmlBtn" class="action-outline">⌘ HTML</button>
+     <button type="button" id="printBtn" class="action-outline">▧ PDF</button>
+    </div>
+    <p class="preview-hint" id="exportHint">L'image PNG contient le mail entier, sans le cadre de prévisualisation.</p>
+   </section>
+  </div>
+ </section>
+ <section class="chatgpt-callout">
+  <div class="chatgpt-icon">✦</div>
+  <div><p class="eyebrow purple">03 — AVEC CHATGPT</p><h2>Demande de nouveaux canevas directement dans une conversation.</h2><p>ChatGPT peut modifier le fichier <code>templates.json</code> et ajouter des images dans le dossier <code>assets/</code> de ton dépôt GitHub. Ensuite, clique sur <strong>Actualiser depuis GitHub</strong> : les nouveaux modèles apparaîtront ici.</p><button type="button" id="copyInstructionBtn" class="action-primary callout-btn">Copier la consigne pour ChatGPT</button></div>
+ </section>
+ <footer><span>MAILOTION STUDIO • Tes modèles, tes couleurs, tes clients.</span><span>Exemples fictifs à personnaliser avant présentation.</span></footer>
+</main>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="./app.js" defer></script>
+</body>
+</html>
