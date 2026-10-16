@@ -1,0 +1,20 @@
+{
+  "name": "Mailotion Studio — Canevas emails",
+  "short_name": "Mailotion Studio",
+  "description": "Créez vos maquettes d'emails clients sur Android. Téléchargez en PNG ou HTML, sans abonnement Canva.",
+  "start_url": "./",
+  "id": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f4f8",
+  "theme_color": "#241433",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "lang": "fr"
+}
